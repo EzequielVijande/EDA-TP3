@@ -32,5 +32,8 @@
     <ClCompile Include="Output.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Simulacion.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

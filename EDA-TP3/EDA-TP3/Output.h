@@ -1,10 +1,10 @@
 #ifndef
 #define OUTPUT_H
 
-#include "allegro5\allegro.h"
+#include <allegro5\allegro.h>
 #include "allegro5\allegro_primitives.h"
-
-#define SPACE 20
+#include "allegro5\allegro_color.h"
+#define SPACE 20.0
 
 void PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* diplay, int* Ticks);
 //Funcion que recibe los resultados de las simulaciones corridas e
