@@ -3,17 +3,38 @@
 #define BAR_COLOR "green"
 #define BACKGROUND_COLOR "black"
 #define TICKS_PER_SPACE 0.1
+#define FONT_COLOR "hotpink"
+#define REFERENCE_COLOR "lightblue"
+#define FONT_FILE "font.ttf"	
 
-void PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
+int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
 {
+	font= al_load_ttf_font(FONT_FILE, (SPACE)/4.0, ALLEGRO_TTF_MONOCHROME)
+	if (font == NULL)
+	{
+		return -1;
+	}
+
 	al_set_target_backbuffer(display);
 	al_clear_to_color(al_color_name(BACKGROUND_COLOR)); //pinta el display.
 
 	unsigned int height = al_get_display_height(display);
 	unsigned int width = al_get_display_width(display);
 
-	unsigned int plane_width = width - 2.0*SPACE;
-	unsigned int plane_height = height - 2.0*SPACE;
+	unsigned double plane_width = width - 2.0*SPACE;
+	unsigned double plane_height = height - 2.0*SPACE;
+
+	unsigned double tick_space = plane_height / 11.0;
+	unsigned double tick_number_y = 0.0;
+
+	//imprime los numeros sobre el eje de ticks.
+	for (int j=1; j<=10; j++)
+	{
+		tick_number_y = height - (SPACE)-j*tick_space;
+		al_draw_textf(font, al_color_name(FONT_COLOR), (SPACE)/2.0, tick_number_y, ALLEGRO_ALIGN_CENTRE, "%d", TICKS_PER_SPACE*j*SPACE);
+	}
+	al_draw_text(font, al_color_name(REFERENCE_COLOR), (SPACE) / 2.0, (SPACE) / 2.0, ALLEGRO_ALIGN_CENTRE, "Tick");
+
 
 	unsigned double bar_width = plane_width / (double)(n + 1);
 	unsigned double bar_space = bar_width / (double)(n - 1);
@@ -30,6 +51,8 @@ void PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
 	unsigned double lower_right_corner_x = 0.0;
 	unsigned double lower_right_corner_y = 0.0;
 
+	unsigned double number_x = 0.0;
+
 	for (int i = 0; i < n; i++)
 	{
 		upper_left_corner_x = (SPACE)+i*(bar_width + bar_space);
@@ -39,8 +62,15 @@ void PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
 
 		al_draw_filled_rectangle(upper_left_corner_x, upper_left_corner_y, lower_right_corner_x, lower_right_corner_y, al_color_name(BAR_COLOR)));
 		//Dibuja la barra correspondiente al robot
+
+		number_x = (upper_left_corner_x+ lower_right_corner_x)/2.0;
+
+		al_draw_textf(font, al_color_name(FONT_COLOR), number_x, height - ((SPACE) / 2.0), ALLEGRO_ALIGN_CENTRE, "%d", i+1);
+		//imprime el numero de robots abajo de la barra correspondiente.
 	}
 
+	al_draw_text(font, al_color_name(REFERENCE_COLOR), width- (SPACE) / 2.0, height- (SPACE) / 2.0, ALLEGRO_ALIGN_CENTRE, "Robs");
+	return 0;
 
 
 }
