@@ -5,16 +5,16 @@
 #define TICKS_PER_SPACE 0.1
 #define FONT_COLOR "hotpink"
 #define REFERENCE_COLOR "lightblue"
-#define FONT_FILE "font.ttf"	
+#define FONT_FILE "..\\Fonts\\Starjedi.ttf"	
 
 int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Ticks)
 {
-	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE) / 4.0, ALLEGRO_TTF_MONOCHROME);
+	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE) / 4.0, 0);
 	if (font == NULL)
 	{
 		return -1;
 	}
-
+	
 	al_set_target_backbuffer(display);
 	al_clear_to_color(al_color_name(BACKGROUND_COLOR)); //pinta el display.
 
@@ -56,7 +56,7 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Tick
 	for (unsigned int i = 0; i < n; i++)
 	{
 		upper_left_corner_x = (SPACE)+i*(bar_width + bar_space);
-		upper_left_corner_y = (height - (SPACE)) - (Ticks[i - 1])*(TICKS_PER_SPACE)*(SPACE);
+		upper_left_corner_y = (height - (SPACE)) - (Ticks[i])*(TICKS_PER_SPACE)*(SPACE);
 		lower_right_corner_x = upper_left_corner_x + bar_space;
 		lower_right_corner_y = height - SPACE;
 

@@ -5,7 +5,7 @@
 #include "allegro5\allegro_primitives.h"
 #include "allegro5\allegro_color.h"
 #include "allegro5\allegro_ttf.h"
-#define SPACE 20.0
+#define SPACE 50.0
 
 int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned long* Ticks);
 
