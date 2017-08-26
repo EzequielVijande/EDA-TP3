@@ -1,5 +1,5 @@
 #include "Structures.h"
-
+#include<math.h>
 robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int width);
 //Crea robots y los inicializa aleatoreamente. Asume que ya se ha inicializado la semilla srand(time(NULL))
 
@@ -16,7 +16,7 @@ void destroyRobots(robot_t * robot);
 piso_t * createFloor(unsigned int heigth, unsigned int width);
 //REVISAR FOR!
 
-bool getPisoState(piso_t * piso, unsigned iont fila, unsigned int columna);
+bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna);
 //Devuelve el estado del piso
 //REVISAR QUE ESTE BIEN LA CUENTA
 
@@ -27,14 +27,14 @@ bool getPisoState(piso_t * piso, unsigned iont fila, unsigned int columna);
 robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int width)
 {
 	robot_t * robots = NULL;
-	robots = malloc(sizeof(robot_t)*count)
+	robots = malloc(sizeof(robot_t)*count);
 		if (robots != NULL)
 		{
-			for (int i = 0; i < count; i++)
+			for (unsigned int i = 0; i < count; i++)
 			{
-				robots[i].pos.x = (width / ((double)(rand() + 1)) / 2;
-				robots[i].pos.y = (width / ((double)(rand() + 1)) / 2;
-				robots[i].angle = (360.0 / ((double)(rand() + 1)) / 2;
+				robots[i].pos.x = (width / ((double)(rand() + 1)) / 2);
+				robots[i].pos.y = (width / ((double)(rand() + 1)) / 2);
+				robots[i].angle = (360.0 / ((double)(rand() + 1)) / 2);
 			}
 		}
 	return robots;
@@ -56,7 +56,7 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 		posX = posX - cos(alpha);				//falta multiplicar al cos y al sin por la unidad
 		posY = posY - sin(alpha);
 
-		alpha = (360.0 / ((double)(rand() + 1)) / 2;
+		alpha = (360.0 / ((double)(rand() + 1)) / 2);
 
 		posX = posX - cos(alpha);				//falta multiplicar al cos y al sin por la unidad
 		posY = posY - sin(alpha);
@@ -69,7 +69,7 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 
 pos_t getRobot(robot_t * robot)
 {
-	pos_t pos = { robot_t->pos.x, robot_t->pos.y };
+	pos_t pos = { (robot->pos.x), (robot->pos.y) };
 
 	return pos;
 }
@@ -93,7 +93,7 @@ piso_t * createFloor(unsigned int heigth, unsigned int width)
 	{
 		for (int i = 0; i < cantBaldosas; i++)
 		{
-			piso->state[i] = false;						//REVISAR!!!!!
+			(piso+1)->state = false;						//REVISAR!!!!!
 		}
 
 		return piso;
@@ -105,7 +105,7 @@ piso_t * createFloor(unsigned int heigth, unsigned int width)
 	}
 }
 
-bool getPisoState(piso_t * piso, unsigned iont fila, unsigned int columna)
+bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna)
 {
-	return (((piso_t *)(fila*(piso->width) + col))->state);					//REVISAR!!!!!
+	return (((piso_t *)(fila*(piso->width) + columna))->state);					//REVISAR!!!!!
 }

@@ -1,9 +1,11 @@
 #include"Output.h"
+#include<stdio.h>
+#include<stdlib.h>
 #include<allegro5\allegro.h>
 #include"allegro5\allegro_color.h"
 #include"allegro5\allegro_font.h"
 #include"allegro5\allegro_primitives.h"
-#include"allegro5\allegro_ttf.h
+#include"allegro5\allegro_ttf.h"
 
 int main(int argc, char* argv[])
 {
@@ -26,7 +28,7 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "failed to initialize ttf adddon!\n");
 		return -1;
 	}
-	if (!al_init_primitives_addon)
+	if (!al_init_primitives_addon())
 	{
 		fprintf(stderr, "failed to initialize primitives adddon!\n");
 		return -1;

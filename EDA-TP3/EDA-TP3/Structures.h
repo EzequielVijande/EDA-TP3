@@ -5,6 +5,8 @@
 
 #define SUCIO false
 #define LIMPIO true
+#include <stdbool.h>
+#include<stdlib.h>
 
 typedef struct
 {
