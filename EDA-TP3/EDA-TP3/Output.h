@@ -7,7 +7,8 @@
 #include "allegro5\allegro_ttf.h"
 #define SPACE 20.0
 
-int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* diplay, int* Ticks);
+int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned long* Ticks);
+
 //Funcion que recibe los resultados de las simulaciones corridas e
 //imprime en pantalla un gafico de barras mostrando la relacion entre
 //la cantidad de Ticks y la cantidad de robots.

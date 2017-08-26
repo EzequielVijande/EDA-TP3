@@ -7,7 +7,7 @@
 #define REFERENCE_COLOR "lightblue"
 #define FONT_FILE "font.ttf"	
 
-int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
+int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Ticks)
 {
 	font= al_load_ttf_font(FONT_FILE, (SPACE)/4.0, ALLEGRO_TTF_MONOCHROME)
 	if (font == NULL)
@@ -70,6 +70,7 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* diplay, int* Ticks)
 	}
 
 	al_draw_text(font, al_color_name(REFERENCE_COLOR), width- (SPACE) / 2.0, height- (SPACE) / 2.0, ALLEGRO_ALIGN_CENTRE, "Robs");
+	al_destroy_font(font);
 	return 0;
 
 

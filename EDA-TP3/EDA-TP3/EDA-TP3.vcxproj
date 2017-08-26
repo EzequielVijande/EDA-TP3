@@ -119,6 +119,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.c" />
     <ClCompile Include="Output.c" />
     <ClCompile Include="Simulacion.c" />
   </ItemGroup>
