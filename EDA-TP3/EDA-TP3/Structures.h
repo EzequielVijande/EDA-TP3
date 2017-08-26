@@ -21,6 +21,8 @@ typedef struct
 
 typedef struct
 {
+	unsigned int heigth;
+	unsigned int width;
 	bool state;
 }piso_t;
 
