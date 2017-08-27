@@ -8,7 +8,10 @@
 #include <allegro5\allegro_ttf.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_image.h>
+#include<stdlib.h>
+#include<stdio.h>
 #include "Structures.h"
+#include "Simulation.h"
 
 #define SPACE 50.0
 

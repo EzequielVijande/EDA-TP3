@@ -7,8 +7,6 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width);
 //Mueve al robot. Ultiliza math.h. Asume que ya se ha inicializado la semilla srand(time(NULL))
 //VERIFICAR EL CASO DE SALIRSE DEL PISO FUNCIONE CORRECTAMENTE
 
-pos_t getRobot(robot_t * robot);
-//Devuelve las coordenadas del robot
 
 void destroyRobots(robot_t * robot);
 //Destruye los robots creados
@@ -16,9 +14,9 @@ void destroyRobots(robot_t * robot);
 piso_t * createFloor(unsigned int heigth, unsigned int width);
 //REVISAR FOR!
 
-bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna);
-//Devuelve el estado del piso
-//REVISAR QUE ESTE BIEN LA CUENTA
+
+
+
 
 //FALTARIA:
 // sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
@@ -42,7 +40,6 @@ robot_t * createRobot(unsigned int count, unsigned int height, unsigned int widt
 
 void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 {
-	robot_t newCoord;
 
 	double posX = robots->pos.x;
 	double posY = robots->pos.y;
@@ -67,11 +64,17 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 	robots->angle = alpha;
 }
 
-pos_t getRobot(robot_t * robot)
+pos_t GetRobotPos(const robot_t *robot)
 {
 	pos_t pos = { (robot->pos.x), (robot->pos.y) };
 
 	return pos;
+}
+
+double GetRobotDir(const robot_t *robot)
+{
+	double direction = (robot->angle);
+	return direction;
 }
 
 void destroyRobots(robot_t * robot)
@@ -91,9 +94,9 @@ piso_t * createFloor(unsigned int height, unsigned int width)
 
 	if (piso != NULL)
 	{
-		for (int i = 0; i < height; i++)
+		for (unsigned int i = 0; i < height; i++)
 		{
-			for (int j = 0; j < width; j++)
+			for (unsigned int j = 0; j < width; j++)
 			{
 				(piso)->state = false;						//REVISAR!!!!!
 				(piso->ubicacion).x = j*UNIT + (UNIT / 2.0);
@@ -115,4 +118,9 @@ piso_t * createFloor(unsigned int height, unsigned int width)
 bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna)
 {
 	return (((piso_t *)(fila*(piso->width) + columna))->state);					//REVISAR!!!!!
+}
+
+pos_t getPisoLocation(piso_t* piso, unsigned int fila, unsigned int columna)
+{
+	return (((piso_t *)(fila*(piso->width) + columna))->ubicacion);
 }

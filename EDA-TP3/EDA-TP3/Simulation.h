@@ -12,6 +12,9 @@ void MoveRobot(robot_t *robot, unsigned int height, unsigned int width);
 pos_t GetRobotPos(const robot_t *robot);
 //Devuelve las coordenadas de un robot determinado.
 
+double GetRobotDir(const robot_t *robot);
+//Devuelve el angulo en el que esta dirrecionado el robot.
+
 void DestroyRobots(robot_t *robots);
 //Libera la memoria usada por los robots.
 
@@ -28,6 +31,13 @@ unsigned long RunSim(sim_t* simulation);
 
 void DestroySim(sim_t* simulation);
 //Lbera la memoria creada por la simulacion.
+
+bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna);
+//Devuelve el estado del piso
+//REVISAR QUE ESTE BIEN LA CUENTA
+
+pos_t getPisoLocation(piso_t * piso, unsigned int fila, unsigned int columna);
+//Devuelve las coordenadas de un determinado piso.
 
 
 #endif // !SIMULATION_H

@@ -1,15 +1,26 @@
 #include "Output.h"
+#include <math.h>
+#define _USE_MATH_DEFINES
+
 #define AXIS_COLOR "white"
 #define BAR_COLOR "green"
 #define BACKGROUND_COLOR "black"
 #define TICKS_PER_SPACE 0.1
 #define FONT_COLOR "hotpink"
 #define REFERENCE_COLOR "lightblue"
+#define VECTOR_COLOR "black"
 #define FONT_FILE "C:/Users/Ezequiel PC/Documents/Visual Studio 2017/Projects/EDA-TP3/EDA-TP3/Debug/ArcadeClassic.ttf"	
 
-void ActualizarBaldosas(piso_t* baldosas, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
-//Funcion que recibe el numero de baldosas y las dos imagen para cada estado de la baldosa.
-//
+void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
+//Funcion que recibe las baldosas, la cantidad de las mismas y las dos imagen para cada estado de la baldosa.
+//Actualiza todas las baldosas en el display segun su estado.
+//Las imagenes ya deben estar cargadas en su tamano respectivo.
+
+void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* imagen_robot);
+//Funcion que recibe los robots, la cantidad de los mismos y la imagen
+//que se utiliza para representarlos.
+//Dibuja los robots en sus posiciones dentro del display.
+
 int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Ticks)
 {
 	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE)/4, 0);
@@ -79,7 +90,62 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Tick
 
 }
 
-void ActualizarBaldosas();
+void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio)
+{
+	bool state;
+	pos_t cord;
+	for (unsigned int i=0; i<height; i++) //actualiza todas las baldosas segun sus estados.
+	{
+		for (unsigned int j = 0; j < width; j++)
+		{
+			state = getPisoState(baldosas, i, j);
+			cord = getPisoLocation(baldosas, i, j);
+			if (state)
+			{
+				al_draw_bitmap(imagen_limpio, cord.x, cord.y, 0); //dibuja la baldosa limpia.
+			}
+			else
+			{
+				al_draw_bitmap(imagen_sucio, cord.x, cord.y, 0); //dibuja la baldosa sucia.
+			}
+		}
+		
+	}
+}
+
+void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* imagen_robot)
+{
+	pos_t cord = { 0.0 , 0.0 };
+	pos_t vector = { 0.0 , 0.0 };
+	pos_t vector_head1 = { 0.0 , 0.0 }; //Representan los tres vertices del triangulo que forma
+	pos_t vector_head2 = { 0.0 , 0.0 }; //la cabeza del vector.
+	pos_t vector_head3 = { 0.0 , 0.0 };
+	double angle = 0.0;
+
+	for (unsigned int i = 0; i < n_robots; i++)
+	{
+		cord = GetRobotPos(robots + i);
+		angle = GetRobotDir(robots + i);
+		al_draw_bitmap(imagen_robot, cord.x, cord.y, 0); //dibuja el robot en su posicion del display
+
+		(vector.x) = (cord.x) + (UNIT)*cos(angle);
+		(vector.y) = (cord.y) - (UNIT)*sin(angle);
+		al_draw_line(cord.x, cord.y, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
+
+		vector_head1.x = (vector.x) - ((UNIT)/10.0)*cos(M_PI / 4.0);
+		vector_head1.y = (vector.y) - ((UNIT) / 10.0)*sin(M_PI / 4.0);
+
+		vector_head2.x = (vector.x) +((UNIT) / 10.0)*cos(M_PI / 4.0);
+		vector_head2.y = (vector.y) + ((UNIT) / 10.0)*sin(M_PI / 4.0);
+
+		vector_head3.x = (vector.x) + ((UNIT) / 10.0)*cos(angle);
+		vector_head3.y = (vector.y) - ((UNIT) / 10.0)*sin(angle);
+
+		al_draw_filled_triangle(vector_head1.x, vector_head1.y, vector_head2.x, vector_head2.y, vector_head3.x, vector_head3.y, al_color_name(VECTOR_COLOR));
+		//Dibuja el vector que indica la direccion del robot.Tiene modulo UNIT y parte del centro del robot.
+	}
+}
+
 
 void set_null(void  **(puntero), int largo)
 {
