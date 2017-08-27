@@ -10,7 +10,7 @@
 #define UNIT 20
 
 #include <stdbool.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
 typedef struct
 {

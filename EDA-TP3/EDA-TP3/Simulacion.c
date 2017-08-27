@@ -1,5 +1,5 @@
 #include "Structures.h"
-#include<math.h>
+#include <math.h>
 robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int width);
 //Crea robots y los inicializa aleatoreamente. Asume que ya se ha inicializado la semilla srand(time(NULL))
 
@@ -7,20 +7,18 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width);
 //Mueve al robot. Ultiliza math.h. Asume que ya se ha inicializado la semilla srand(time(NULL))
 //VERIFICAR EL CASO DE SALIRSE DEL PISO FUNCIONE CORRECTAMENTE
 
-
 void destroyRobots(robot_t * robot);
 //Destruye los robots creados
+
+void destroySim(sim_t * sim);
+//Destruye las simulaciones creadas
 
 piso_t * createFloor(unsigned int heigth, unsigned int width);
 //REVISAR FOR!
 
-
-
-
-
 //FALTARIA:
 // sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
-// void destroySim (sim_t * sim);
+
 
 robot_t * createRobot(unsigned int count, unsigned int height, unsigned int width)
 {
@@ -123,4 +121,9 @@ bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna)
 pos_t getPisoLocation(piso_t* piso, unsigned int fila, unsigned int columna)
 {
 	return (((piso_t *)(fila*(piso->width) + columna))->ubicacion);
+}
+
+void destroySim(sim_t * sim)
+{
+	free(sim);
 }
