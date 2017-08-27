@@ -1,7 +1,9 @@
 //Modulo en el que se definen las estructuras generales usadas
 //en el programa.
 
-#ifndef DEFINTIONS_H
+#ifndef DEFINITIONS_H
+
+#define DEFINITIONS_H
 
 #define SUCIO false
 #define LIMPIO true
@@ -44,4 +46,5 @@ typedef struct
 	unsigned long tick_count;
 
 }sim_t;
-#endif // !DEFINTIONS_H
+
+#endif // !DEFINITIONS_H

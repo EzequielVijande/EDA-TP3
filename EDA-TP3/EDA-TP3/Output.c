@@ -1,6 +1,9 @@
 #include "Output.h"
-#include <math.h>
 #define _USE_MATH_DEFINES
+#include <math.h>
+
+
+
 
 #define AXIS_COLOR "white"
 #define BAR_COLOR "green"

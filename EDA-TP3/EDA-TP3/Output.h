@@ -12,7 +12,6 @@
 #include<stdio.h>
 #include "Structures.h"
 #include "Simulation.h"
-
 #define SPACE 50.0
 
 int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned long* Ticks);
@@ -28,5 +27,4 @@ int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned lon
 //Funcion que inicializa un arreglo de punteros en NULL.
 void set_null(void  **(puntero), int largo);
 
-void Actualizar_display();
 #endif //OUTPUT_H

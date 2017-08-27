@@ -1,5 +1,5 @@
 #ifndef SIMULATION_H
-
+#define SIMULATION_H
 #include "Structures.h"
 
 robot_t CreateRobots(unsigned int Number, unsigned int height, unsigned width);
