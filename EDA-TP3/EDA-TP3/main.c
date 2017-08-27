@@ -2,10 +2,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<allegro5\allegro.h>
-#include"allegro5\allegro_color.h"
-#include"allegro5\allegro_font.h"
-#include"allegro5\allegro_primitives.h"
-#include"allegro5\allegro_ttf.h"
+#include<allegro5\allegro_color.h>
+#include<allegro5\allegro_font.h>
+#include<allegro5\allegro_primitives.h>
+#include<allegro5\allegro_ttf.h>
 
 int main(int argc, char* argv[])
 {
@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "failed to load font!\n");
 		return -1;
 	}
-	PrintHistogram(n_robots, display, Ticks);
 	al_flip_display();
 	al_rest(10);
 	al_destroy_display(display);

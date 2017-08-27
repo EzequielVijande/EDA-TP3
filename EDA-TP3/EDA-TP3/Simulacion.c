@@ -24,7 +24,7 @@ bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna);
 // sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
 // void destroySim (sim_t * sim);
 
-robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int width)
+robot_t * createRobot(unsigned int count, unsigned int height, unsigned int width)
 {
 	robot_t * robots = NULL;
 	robots = malloc(sizeof(robot_t)*count);
@@ -33,7 +33,7 @@ robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int widt
 			for (unsigned int i = 0; i < count; i++)
 			{
 				robots[i].pos.x = (width / ((double)(rand() + 1)) / 2);
-				robots[i].pos.y = (width / ((double)(rand() + 1)) / 2);
+				robots[i].pos.y = (height / ((double)(rand() + 1)) / 2);
 				robots[i].angle = (360.0 / ((double)(rand() + 1)) / 2);
 			}
 		}
@@ -49,7 +49,7 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 	double alpha = robots->angle;
 
 	posX = posX + cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-	posY = posY + sin(alpha);
+	posY = posY - sin(alpha);
 
 	while ((posX < 0) && (posX > width) && (posY < 0) && (posY > heigth))
 	{
@@ -79,21 +79,28 @@ void destroyRobots(robot_t * robot)
 	free(robot);
 }
 
-piso_t * createFloor(unsigned int heigth, unsigned int width)
+piso_t * createFloor(unsigned int height, unsigned int width)
 {
 	piso_t * piso = NULL;
-	piso->heigth = heigth;
+	piso->heigth = height;
 	piso->width = width;
 
-	int cantBaldosas = (int)heigth*width;
+	int cantBaldosas = (int)height*width;
 
 	piso = malloc(sizeof(piso_t)*cantBaldosas);
 
 	if (piso != NULL)
 	{
-		for (int i = 0; i < cantBaldosas; i++)
+		for (int i = 0; i < height; i++)
 		{
-			(piso+1)->state = false;						//REVISAR!!!!!
+			for (int j = 0; j < width; j++)
+			{
+				(piso)->state = false;						//REVISAR!!!!!
+				(piso->ubicacion).x = j*UNIT + (UNIT / 2.0);
+				(piso->ubicacion).x = i*UNIT + (UNIT / 2.0);
+			}
+		
+			
 		}
 
 		return piso;

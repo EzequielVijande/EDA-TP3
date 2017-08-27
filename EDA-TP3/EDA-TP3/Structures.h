@@ -5,6 +5,8 @@
 
 #define SUCIO false
 #define LIMPIO true
+#define UNIT 20
+
 #include <stdbool.h>
 #include<stdlib.h>
 
@@ -25,6 +27,7 @@ typedef struct
 {
 	unsigned int heigth;
 	unsigned int width;
+	pos_t ubicacion; //se considera la ubicacion respecto del centro de la baldosa.
 	bool state;
 }piso_t;
 

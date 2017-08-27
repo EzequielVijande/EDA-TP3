@@ -5,11 +5,14 @@
 #define TICKS_PER_SPACE 0.1
 #define FONT_COLOR "hotpink"
 #define REFERENCE_COLOR "lightblue"
-#define FONT_FILE "..\\Fonts\\Starjedi.ttf"	
+#define FONT_FILE "C:/Users/Ezequiel PC/Documents/Visual Studio 2017/Projects/EDA-TP3/EDA-TP3/Debug/ArcadeClassic.ttf"	
 
+void ActualizarBaldosas(piso_t* baldosas, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
+//Funcion que recibe el numero de baldosas y las dos imagen para cada estado de la baldosa.
+//
 int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Ticks)
 {
-	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE) / 4.0, 0);
+	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE)/4, 0);
 	if (font == NULL)
 	{
 		return -1;
@@ -74,4 +77,59 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Tick
 	return 0;
 
 
+}
+
+void ActualizarBaldosas();
+
+void set_null(void  **(puntero), int largo)
+{
+	int i;
+	for (i = 0; i<largo; i++)
+	{
+		puntero[i] = NULL;
+	}
+
+}
+
+//Funciones de Imagenes
+
+void destruir_imagenes(ALLEGRO_BITMAP  **imagen, int num_imagenes)
+{
+	int i;
+	for (i = 0; i<num_imagenes; i++)
+	{
+		al_destroy_bitmap(imagen[i]);
+	}
+}
+
+ALLEGRO_BITMAP * load_image_at_size(char* image_name, int size_x, int size_y)
+{
+	ALLEGRO_BITMAP * image = NULL;
+	ALLEGRO_BITMAP * current_target = NULL;
+	ALLEGRO_BITMAP * resized_image = NULL;
+
+	current_target = al_get_target_bitmap(); //salva el target original para no perderlo
+
+	image = al_load_bitmap(image_name);
+	if (image == NULL)
+	{
+		return NULL;
+	}
+
+	resized_image = al_create_bitmap(size_x, size_y);
+	if (resized_image == NULL)
+	{
+		al_destroy_bitmap(image);
+		return NULL;
+
+
+	}
+
+	al_set_target_bitmap(resized_image);
+	al_draw_scaled_bitmap(image, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image),
+		0, 0, size_x, size_y, 0);
+
+	al_set_target_bitmap(current_target); //vuelve al target original
+	al_destroy_bitmap(image);
+	return resized_image;
 }
