@@ -14,6 +14,13 @@
 #include "Simulation.h"
 #define SPACE 50.0
 
+void ActualizarDisplay(sim_t* Simulacion, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio, ALLEGRO_BITMAP* imagen_robot);
+//Recibe los datos de la simulacion y las imagenes correspondientes para actualizar el display.
+//Asume que las imagenes ya estan cargadas en el tamano adecuado.
+//
+//NOTA: no llama a al_flip_display en ningun momento.
+
+
 int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned long* Ticks);
 
 //Funcion que recibe los resultados de las simulaciones corridas e

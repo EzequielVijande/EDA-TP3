@@ -149,6 +149,12 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 	}
 }
 
+void ActualizarDisplay(sim_t* Simulacion, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio, ALLEGRO_BITMAP* imagen_robot)
+{
+	ActualizarRobots(Simulacion->robots, Simulacion->robot_count , imagen_robot);
+	ActualizarBaldosas(Simulacion->piso, Simulacion->height, Simulacion->width, imagen_sucio, imagen_limpio);
+}
+
 
 void set_null(void  **(puntero), int largo)
 {

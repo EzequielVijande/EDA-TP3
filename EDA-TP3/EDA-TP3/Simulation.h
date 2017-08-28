@@ -2,12 +2,14 @@
 #define SIMULATION_H
 #include "Structures.h"
 
-robot_t CreateRobots(unsigned int Number, unsigned int height, unsigned width);
+robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width);
 //Crea un heap con el numero de robots a crear y les da un valor incial aleatorio
-//de posicision y de angulo a cada uno.
+//de posicision y de angulo a cada uno. Asume que ya se ha inicializado la semilla srand(time(NULL))
 
 void MoveRobot(robot_t *robot, unsigned int height, unsigned int width);
 //Funcion que mueve un robot una unidad en la direccion correspondiente.
+//Mueve al robot. Ultiliza math.h. Asume que ya se ha inicializado la semilla srand(time(NULL))
+//VERIFICAR EL CASO DE SALIRSE DEL PISO FUNCIONE CORRECTAMENTE
 
 pos_t GetRobotPos(const robot_t *robot);
 //Devuelve las coordenadas de un robot determinado.

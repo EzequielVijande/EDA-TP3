@@ -1,32 +1,18 @@
-#include "Structures.h"
+#include "Simulation.h"
 #include <math.h>
-robot_t * createRobot(unsigned int count, unsigned int heigth, unsigned int width);
-//Crea robots y los inicializa aleatoreamente. Asume que ya se ha inicializado la semilla srand(time(NULL))
 
-void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width);
-//Mueve al robot. Ultiliza math.h. Asume que ya se ha inicializado la semilla srand(time(NULL))
-//VERIFICAR EL CASO DE SALIRSE DEL PISO FUNCIONE CORRECTAMENTE
-
-void destroyRobots(robot_t * robot);
-//Destruye los robots creados
-
-void destroySim(sim_t * sim);
-//Destruye las simulaciones creadas
-
-piso_t * createFloor(unsigned int heigth, unsigned int width);
-//REVISAR FOR!
 
 //FALTARIA:
 // sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
 
 
-robot_t * createRobot(unsigned int count, unsigned int height, unsigned int width)
+robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 {
 	robot_t * robots = NULL;
-	robots = malloc(sizeof(robot_t)*count);
+	robots = malloc(sizeof(robot_t)*Number);
 		if (robots != NULL)
 		{
-			for (unsigned int i = 0; i < count; i++)
+			for (unsigned int i = 0; i < Number; i++)
 			{
 				robots[i].pos.x = (width / ((double)(rand() + 1)) / 2);
 				robots[i].pos.y = (height / ((double)(rand() + 1)) / 2);
@@ -36,7 +22,7 @@ robot_t * createRobot(unsigned int count, unsigned int height, unsigned int widt
 	return robots;
 }
 
-void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
+void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
 {
 
 	double posX = robots->pos.x;
@@ -46,7 +32,7 @@ void moveRobot(robot_t * robots, unsigned int heigth, unsigned int width)
 	posX = posX + cos(alpha);				//falta multiplicar al cos y al sin por la unidad
 	posY = posY - sin(alpha);
 
-	while ((posX < 0) && (posX > width) && (posY < 0) && (posY > heigth))
+	while ((posX < 0) && (posX > width) && (posY < 0) && (posY > height))
 	{
 		posX = posX - cos(alpha);				//falta multiplicar al cos y al sin por la unidad
 		posY = posY - sin(alpha);
@@ -75,12 +61,12 @@ double GetRobotDir(const robot_t *robot)
 	return direction;
 }
 
-void destroyRobots(robot_t * robot)
+void DestroyRobots(robot_t* robots)
 {
-	free(robot);
+	free(robots);
 }
 
-piso_t * createFloor(unsigned int height, unsigned int width)
+piso_t* CreateFloor(unsigned int width, unsigned int height)
 {
 	piso_t * piso = NULL;
 	piso->heigth = height;
@@ -123,7 +109,7 @@ pos_t getPisoLocation(piso_t* piso, unsigned int fila, unsigned int columna)
 	return (((piso_t *)(fila*(piso->width) + columna))->ubicacion);
 }
 
-void destroySim(sim_t * sim)
+void DestroySim(sim_t* sim)
 {
 	free(sim);
 }
