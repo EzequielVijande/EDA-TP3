@@ -29,18 +29,18 @@ void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
 	double posY = robots->pos.y;
 	double alpha = robots->angle;
 
-	posX = posX + cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-	posY = posY - sin(alpha);
+	posX = posX + (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
+	posY = posY - (UNIT)*sin(alpha);
 
 	while ((posX < 0) && (posX > width) && (posY < 0) && (posY > height))
 	{
-		posX = posX - cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-		posY = posY - sin(alpha);
+		posX = posX - (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
+		posY = posY - (UNIT)*sin(alpha);
 
 		alpha = (360.0 / ((double)(rand() + 1)) / 2);
 
-		posX = posX - cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-		posY = posY - sin(alpha);
+		posX = posX - (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
+		posY = posY - (UNIT)*sin(alpha);
 	}
 
 	robots->pos.x = posX;

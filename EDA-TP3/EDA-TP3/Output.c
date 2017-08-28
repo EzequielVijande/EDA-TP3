@@ -2,17 +2,13 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-
-
-
 #define AXIS_COLOR "white"
 #define BAR_COLOR "green"
 #define BACKGROUND_COLOR "black"
-#define TICKS_PER_SPACE 0.1
 #define FONT_COLOR "hotpink"
 #define REFERENCE_COLOR "lightblue"
 #define VECTOR_COLOR "black"
-#define FONT_FILE "C:/Users/Ezequiel PC/Documents/Visual Studio 2017/Projects/EDA-TP3/EDA-TP3/Debug/ArcadeClassic.ttf"	
+#define FONT_FILE "../Fonts/Starjedi.ttf"	
 
 void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
 //Funcion que recibe las baldosas, la cantidad de las mismas y las dos imagen para cada estado de la baldosa.
@@ -26,15 +22,18 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 
 int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Ticks)
 {
-	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE)/4, 0);
+	
+	ALLEGRO_FONT* font = al_load_ttf_font(FONT_FILE, (SPACE)/3.0, 0);
 	if (font == NULL)
 	{
 		return -1;
 	}
 	
+	
 	al_set_target_backbuffer(display);
 	al_clear_to_color(al_color_name(BACKGROUND_COLOR)); //pinta el display.
 
+	
 	unsigned int height = al_get_display_height(display);
 	unsigned int width = al_get_display_width(display);
 
@@ -42,13 +41,17 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Tick
 	double plane_height = height - 2.0*SPACE;
 
 	double tick_space = plane_height / 11.0;
+	unsigned long max_tick = Ticks[0];
+	unsigned long ticks_per_space = max_tick / 10.0;
+
+	
 	double tick_number_y = 0.0;
 
 	//imprime los numeros sobre el eje de ticks.
 	for (int j=1; j<=10; j++)
 	{
 		tick_number_y = height - (SPACE)-j*tick_space;
-		al_draw_textf(font, al_color_name(FONT_COLOR), (SPACE)/2.0, tick_number_y, ALLEGRO_ALIGN_CENTRE, "%d", TICKS_PER_SPACE*j*SPACE);
+		al_draw_textf(font, al_color_name(FONT_COLOR), (SPACE)/2.0, tick_number_y, ALLEGRO_ALIGN_CENTRE, "%lu", j*ticks_per_space);
 	}
 	al_draw_text(font, al_color_name(REFERENCE_COLOR), (SPACE) / 2.0, (SPACE) / 2.0, ALLEGRO_ALIGN_CENTRE, "Tick");
 
@@ -73,7 +76,7 @@ int PrintHistogram(unsigned int n, ALLEGRO_DISPLAY* display, unsigned long* Tick
 	for (unsigned int i = 0; i < n; i++)
 	{
 		upper_left_corner_x = (SPACE)+i*(bar_width + bar_space);
-		upper_left_corner_y = (height - (SPACE)) - (Ticks[i])*(TICKS_PER_SPACE)*(SPACE);
+		upper_left_corner_y = (height - (SPACE)) - ((Ticks[i])/((double)ticks_per_space))*tick_space;
 		lower_right_corner_x = upper_left_corner_x + bar_space;
 		lower_right_corner_y = height - SPACE;
 

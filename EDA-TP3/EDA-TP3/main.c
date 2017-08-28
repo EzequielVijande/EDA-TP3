@@ -42,11 +42,14 @@ int main(int argc, char* argv[])
 
 	unsigned int n_robots = 5;
 	unsigned long Ticks[5] = {60, 43, 31, 27, 8};
+	/*
 	if(PrintHistogram(n_robots, display, Ticks) == -1);
 	{
 		fprintf(stderr, "failed to load font!\n");
 		return -1;
 	}
+	*/
+	PrintHistogram(n_robots, display, Ticks);
 	al_flip_display();
 	al_rest(10);
 	al_destroy_display(display);

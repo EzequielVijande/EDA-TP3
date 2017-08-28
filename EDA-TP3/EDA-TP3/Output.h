@@ -12,7 +12,7 @@
 #include<stdio.h>
 #include "Structures.h"
 #include "Simulation.h"
-#define SPACE 50.0
+#define SPACE 80.0
 
 void ActualizarDisplay(sim_t* Simulacion, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio, ALLEGRO_BITMAP* imagen_robot);
 //Recibe los datos de la simulacion y las imagenes correspondientes para actualizar el display.
