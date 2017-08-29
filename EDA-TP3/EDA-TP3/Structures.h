@@ -7,7 +7,7 @@
 
 #define SUCIO false
 #define LIMPIO true
-#define UNIT 20
+#define UNIT 40
 
 #include <stdbool.h>
 #include <stdlib.h>

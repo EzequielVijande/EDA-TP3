@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
+	srand(time(NULL));
 	
 
 	if (!al_init()) 
@@ -48,7 +49,7 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "failed to load images!\n");
 		return -1;
 	}
-	display = al_create_display(800, 800);
+	display = al_create_display(10*UNIT, 10 * UNIT);
 	if (display == NULL)
 	{
 		fprintf(stderr, "failed to create display!\n");
@@ -68,7 +69,7 @@ int main(int argc, char* argv[])
 	
 	*/
 	
-	sim_t* Sim= CreateSim(3, 10, 10);
+	sim_t* Sim= CreateSim(6, 10, 10);
 	if (Sim == NULL)
 	{
 		al_destroy_display(display);

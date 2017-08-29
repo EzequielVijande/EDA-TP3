@@ -1,16 +1,17 @@
 #include "Simulation.h"
 #include <math.h>
+#include<stdio.h>
 
 
 //FALTARIA:
-// sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
+// unsigned long RunSim(sim_t* simulation);
 
 sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width)
 {
 	sim_t* Sim = malloc(sizeof(sim_t));
 	if (Sim != NULL)
 	{
-		Sim->robots = CreateRobots(RobotCount, height, width);
+		Sim->robots = CreateRobots(RobotCount, height*(UNIT), width*(UNIT));
 		Sim->robot_count = RobotCount;
 		Sim->height = height;
 		Sim->width = width;
@@ -22,6 +23,7 @@ sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int widt
 		}
 
 	}
+	
 	return NULL;
 
 }
@@ -34,9 +36,9 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 		{
 			for (unsigned int i = 0; i < Number; i++)
 			{
-				robots[i].pos.x = (width / ((double)(rand() + 1)) / 2);
-				robots[i].pos.y = (height / ((double)(rand() + 1)) / 2);
-				robots[i].angle = (360.0 / ((double)(rand() + 1)) / 2);
+				(((robots+i)->pos).x) =  (width / ((double)((rand() + 1)%10)) ) ;
+				(((robots + i)->pos).y) =  (height / ((double)((rand())%10)+1) );
+				((robots + i)->angle) = 360.0 / ((double)((rand()%10)+1)) ;
 			}
 		}
 	return robots;
@@ -70,7 +72,7 @@ void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
 
 pos_t GetRobotPos(const robot_t *robot)
 {
-	pos_t pos = { (robot->pos.x), (robot->pos.y) };
+	pos_t pos = { ((robot->pos).x), ((robot->pos).y) };
 
 	return pos;
 }
@@ -108,9 +110,9 @@ piso_t* CreateFloor(unsigned int width, unsigned int height)
 		{
 			for (unsigned int j = 0; j < width; j++)
 			{
-				(piso)->state = false;						//REVISAR!!!!!
-				(piso->ubicacion).x = j*UNIT + (UNIT / 2.0);
-				(piso->ubicacion).x = i*UNIT + (UNIT / 2.0);
+				((piso + i*width + j)->state) = false;						//REVISAR!!!!!
+				(((piso + i*width + j)->ubicacion).x) = j*UNIT;
+				(((piso + i*width + j)->ubicacion).y) = i*UNIT;
 			}
 		
 			
@@ -120,19 +122,18 @@ piso_t* CreateFloor(unsigned int width, unsigned int height)
 	}
 	else
 	{
-		free(piso);
 		return piso;
 	}
 }
 
 bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna)
 {
-	return ((piso+fila*(piso->width) + columna)->state);					//REVISAR!!!!!
+	return (((piso_t *)(piso + fila*(piso->width) + columna))->state);					//REVISAR!!!!!
 }
 
 pos_t getPisoLocation(piso_t* piso, unsigned int fila, unsigned int columna)
 {
-	return (((piso_t *)(piso+fila*(piso->width) + columna))->ubicacion);
+	return (((piso_t *)(piso + fila*(piso->width) + columna))->ubicacion);
 }
 
 void DestroySim(sim_t* sim)

@@ -1,13 +1,15 @@
 #include "Output.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#define RADIAN(x) (((x)*(M_PI))/180.0)
+
 
 #define AXIS_COLOR "white"
 #define BAR_COLOR "green"
 #define BACKGROUND_COLOR "black"
 #define FONT_COLOR "hotpink"
 #define REFERENCE_COLOR "lightblue"
-#define VECTOR_COLOR "black"
+#define VECTOR_COLOR "red"
 #define FONT_FILE "../Fonts/Starjedi.ttf"	
 
 void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
@@ -104,9 +106,11 @@ void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int widt
 	{
 		for (unsigned int j = 0; j < width; j++)
 		{
+			
 			state = getPisoState(baldosas, i, j);
 			cord = getPisoLocation(baldosas, i, j);
-			if (state)
+			
+			if (state==true)
 			{
 				al_draw_bitmap(imagen_limpio, cord.x, cord.y, 0); //dibuja la baldosa limpia.
 			}
@@ -132,11 +136,13 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 	{
 		cord = GetRobotPos(robots + i);
 		angle = GetRobotDir(robots + i);
+		angle = RADIAN(angle);
 		al_draw_bitmap(imagen_robot, cord.x, cord.y, 0); //dibuja el robot en su posicion del display
 
 		(vector.x) = (cord.x) + (UNIT)*cos(angle);
-		(vector.y) = (cord.y) - (UNIT)*sin(angle);
-		al_draw_line(cord.x, cord.y, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
+		(vector.y) = (cord.y)  - (UNIT)*sin(angle);
+
+		al_draw_line((cord.x) + (UNIT) / 2.0, (cord.y) + (UNIT) / 2.0, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
 
 		vector_head1.x = (vector.x) - ((UNIT)/10.0)*cos(M_PI / 4.0);
 		vector_head1.y = (vector.y) - ((UNIT) / 10.0)*sin(M_PI / 4.0);
@@ -154,8 +160,9 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 
 void ActualizarDisplay(sim_t* Simulacion, imagenes_t* imagenes)
 {
-	ActualizarRobots(Simulacion->robots, Simulacion->robot_count , (imagenes->robot));
+	
 	ActualizarBaldosas(Simulacion->piso, Simulacion->height, Simulacion->width, (imagenes->b_sucia), (imagenes->b_limpia));
+	ActualizarRobots(Simulacion->robots, Simulacion->robot_count, (imagenes->robot));
 }
 
 
