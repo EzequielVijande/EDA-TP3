@@ -152,10 +152,10 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 	}
 }
 
-void ActualizarDisplay(sim_t* Simulacion, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio, ALLEGRO_BITMAP* imagen_robot)
+void ActualizarDisplay(sim_t* Simulacion, imagenes_t* imagenes)
 {
-	ActualizarRobots(Simulacion->robots, Simulacion->robot_count , imagen_robot);
-	ActualizarBaldosas(Simulacion->piso, Simulacion->height, Simulacion->width, imagen_sucio, imagen_limpio);
+	ActualizarRobots(Simulacion->robots, Simulacion->robot_count , (imagenes->robot));
+	ActualizarBaldosas(Simulacion->piso, Simulacion->height, Simulacion->width, (imagenes->b_sucia), (imagenes->b_limpia));
 }
 
 
@@ -210,4 +210,35 @@ ALLEGRO_BITMAP * load_image_at_size(char* image_name, int size_x, int size_y)
 	al_set_target_bitmap(current_target); //vuelve al target original
 	al_destroy_bitmap(image);
 	return resized_image;
+}
+
+imagenes_t* SetImages(void)
+{
+	imagenes_t* img = malloc(sizeof(imagenes_t));
+
+	ALLEGRO_BITMAP* baldosa_limpia = load_image_at_size(BALDOSA_LIMPIA, UNIT, UNIT);
+	ALLEGRO_BITMAP* baldosa_sucia = load_image_at_size(BALDOSA_SUCIA, UNIT, UNIT);
+	ALLEGRO_BITMAP* robot = load_image_at_size(ROBOT, UNIT, UNIT);
+
+	if( (baldosa_sucia == NULL)||(baldosa_limpia == NULL)||(robot == NULL)||(img==NULL) )
+	{
+		return NULL;
+	}
+	else
+	{
+		(img->b_limpia) = baldosa_limpia;
+		(img->b_sucia) = baldosa_sucia;
+		(img->robot) = robot;
+		return img;
+	}
+
+}
+
+void DestroyImages(imagenes_t* img)
+{
+	al_destroy_bitmap((img->b_limpia));
+	al_destroy_bitmap((img->b_sucia));
+	al_destroy_bitmap((img->robot));
+	free(img);
+
 }

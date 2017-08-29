@@ -10,6 +10,8 @@
 int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
+	imagenes_t* imagenes = NULL;
+	
 
 	if (!al_init()) 
 	{
@@ -33,6 +35,19 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "failed to initialize primitives adddon!\n");
 		return -1;
 	}
+	if (!al_init_image_addon())
+	{
+		fprintf(stderr, "failed to initialize images adddon!\n");
+		return -1;
+	}
+
+	imagenes = SetImages();
+
+	if (imagenes == NULL)
+	{
+		fprintf(stderr, "failed to load images!\n");
+		return -1;
+	}
 	display = al_create_display(800, 800);
 	if (display == NULL)
 	{
@@ -42,17 +57,31 @@ int main(int argc, char* argv[])
 
 	unsigned int n_robots = 5;
 	unsigned long Ticks[5] = {60, 43, 31, 27, 8};
+	
 	/*
-	if(PrintHistogram(n_robots, display, Ticks) == -1);
+	if(PrintHistogram(n_robots, display, Ticks) == -1)
 	{
 		fprintf(stderr, "failed to load font!\n");
 		return -1;
 	}
+
+	
 	*/
-	PrintHistogram(n_robots, display, Ticks);
+	
+	sim_t* Sim= CreateSim(3, 10, 10);
+	if (Sim == NULL)
+	{
+		al_destroy_display(display);
+		DestroyImages(imagenes);
+
+	}
+	ActualizarDisplay(Sim, imagenes);
+
 	al_flip_display();
 	al_rest(10);
 	al_destroy_display(display);
+	DestroySim(Sim);
+	DestroyImages(imagenes);
 
 
 	return 0;

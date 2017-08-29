@@ -31,6 +31,9 @@ unsigned long RunSim(sim_t* simulation);
 //Corre la simulacion hasta limpiar todas las baldosas y devuelve
 //el numero de ticks que tardo en finalizar.
 
+void DestroyFloor(piso_t*);
+//Libera la memoria del piso.
+
 void DestroySim(sim_t* simulation);
 //Lbera la memoria creada por la simulacion.
 

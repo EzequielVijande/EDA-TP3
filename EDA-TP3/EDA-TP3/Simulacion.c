@@ -5,6 +5,26 @@
 //FALTARIA:
 // sim_t * createSim (unsigned int robotCount, unsigned int heigth, unsigned int width);
 
+sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width)
+{
+	sim_t* Sim = malloc(sizeof(sim_t));
+	if (Sim != NULL)
+	{
+		Sim->robots = CreateRobots(RobotCount, height, width);
+		Sim->robot_count = RobotCount;
+		Sim->height = height;
+		Sim->width = width;
+		(Sim->tick_count) = 0;
+		(Sim->piso )= CreateFloor(width, height);
+		if (((Sim->robots) != NULL) && ((Sim->piso) != NULL))
+		{
+			return Sim;
+		}
+
+	}
+	return NULL;
+
+}
 
 robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 {
@@ -66,11 +86,15 @@ void DestroyRobots(robot_t* robots)
 	free(robots);
 }
 
+void DestroyFloor(piso_t* piso)
+{
+	free(piso);
+}
+
 piso_t* CreateFloor(unsigned int width, unsigned int height)
 {
 	piso_t * piso = NULL;
-	piso->heigth = height;
-	piso->width = width;
+	
 
 	int cantBaldosas = (int)height*width;
 
@@ -78,6 +102,8 @@ piso_t* CreateFloor(unsigned int width, unsigned int height)
 
 	if (piso != NULL)
 	{
+		piso->heigth = height;
+		piso->width = width;
 		for (unsigned int i = 0; i < height; i++)
 		{
 			for (unsigned int j = 0; j < width; j++)
@@ -101,15 +127,17 @@ piso_t* CreateFloor(unsigned int width, unsigned int height)
 
 bool getPisoState(piso_t * piso, unsigned int fila, unsigned int columna)
 {
-	return (((piso_t *)(fila*(piso->width) + columna))->state);					//REVISAR!!!!!
+	return ((piso+fila*(piso->width) + columna)->state);					//REVISAR!!!!!
 }
 
 pos_t getPisoLocation(piso_t* piso, unsigned int fila, unsigned int columna)
 {
-	return (((piso_t *)(fila*(piso->width) + columna))->ubicacion);
+	return (((piso_t *)(piso+fila*(piso->width) + columna))->ubicacion);
 }
 
 void DestroySim(sim_t* sim)
 {
+	DestroyRobots(sim->robots);
+	DestroyFloor(sim->piso);
 	free(sim);
 }
