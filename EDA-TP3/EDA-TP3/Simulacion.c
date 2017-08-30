@@ -1,5 +1,5 @@
 #include "Simulation.h"
-#include <math.h>
+
 #include<stdio.h>
 
 
@@ -49,24 +49,29 @@ void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
 
 	double posX = robots->pos.x;
 	double posY = robots->pos.y;
+	double nposX = robots->pos.x;
+	double nposY = robots->pos.y;
 	double alpha = robots->angle;
+	alpha = RADIAN(alpha);
 
-	posX = posX + (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-	posY = posY - (UNIT)*sin(alpha);
+	
+	nposX = (posX + (UNIT)*cos(alpha));				//falta multiplicar al cos y al sin por la unidad
+	nposY = (posY - (UNIT)*sin(alpha));
 
-	while ((posX < 0) && (posX > width) && (posY < 0) && (posY > height))
+	while ((nposX < 0) || (nposX > width) || (nposY < 0) || (nposY > height))
 	{
-		posX = posX - (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-		posY = posY - (UNIT)*sin(alpha);
 
-		alpha = (360.0 / ((double)(rand() + 1)) / 2);
-
-		posX = posX - (UNIT)*cos(alpha);				//falta multiplicar al cos y al sin por la unidad
-		posY = posY - (UNIT)*sin(alpha);
-	}
-
-	robots->pos.x = posX;
-	robots->pos.y = posY;
+		alpha = 360.0 / ((double)((rand() % 10) + 1));
+		alpha = RADIAN(alpha);
+		nposX = (posX + (UNIT)*cos(alpha));
+		nposY = (posY - (UNIT)*sin(alpha));
+		}
+	
+	posX = (posX + (UNIT)*cos(alpha));
+	posY = (posY - (UNIT)*sin(alpha));
+	alpha = DEG(alpha);
+	(robots->pos).x = posX;
+	(robots->pos).y = posY;
 	robots->angle = alpha;
 }
 

@@ -77,9 +77,19 @@ int main(int argc, char* argv[])
 
 	}
 	ActualizarDisplay(Sim, imagenes);
+	for (int i = 0; i < 600; i++)
+	{
+		for (unsigned int j = 0; j < (Sim->robot_count); j++)
+		{
+			MoveRobot((Sim->robots)+j, (Sim->height)*(UNIT), (Sim->width)*(UNIT));
+		}
+		ActualizarDisplay(Sim, imagenes);
+		al_rest(0.05);
+		al_flip_display();
+	}
 
 	al_flip_display();
-	al_rest(10);
+	al_rest(2);
 	al_destroy_display(display);
 	DestroySim(Sim);
 	DestroyImages(imagenes);

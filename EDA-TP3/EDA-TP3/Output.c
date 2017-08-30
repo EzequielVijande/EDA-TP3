@@ -1,7 +1,7 @@
 #include "Output.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-#define RADIAN(x) (((x)*(M_PI))/180.0)
+
 
 
 #define AXIS_COLOR "white"

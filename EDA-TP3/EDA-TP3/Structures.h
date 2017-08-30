@@ -4,10 +4,15 @@
 #ifndef DEFINITIONS_H
 
 #define DEFINITIONS_H
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 #define SUCIO false
 #define LIMPIO true
 #define UNIT 40
+#define RADIAN(x) (((x)*(M_PI))/180.0)
+#define DEG(x) (((x)*180.0)/(double)M_PI)
 
 #include <stdbool.h>
 #include <stdlib.h>
