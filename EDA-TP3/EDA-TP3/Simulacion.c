@@ -3,6 +3,8 @@
 #include<stdio.h>
 
 
+
+
 //FALTARIA:
 // unsigned long RunSim(sim_t* simulation);
 
@@ -37,20 +39,21 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 			for (unsigned int i = 0; i < Number; i++)
 			{
 				(((robots+i)->pos).x) =  (rand()%width)+1 ;
-				(((robots + i)->pos).y) =  (rand()%width)+1;
+				(((robots + i)->pos).y) =  (rand()%height)+1;
 				((robots + i)->angle) = rand()%300 ;
 			}
 		}
 	return robots;
 }
 
-void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
+void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_width)
 {
-
+	unsigned int width = input_width *(UNIT);
+	unsigned int height = input_height*(UNIT);
 	double posX = robots->pos.x; //borde superior izquierdo del robot
 	double posY = robots->pos.y;
-	double endX = posX + (UNIT); //Borde inferior derecho del robot
-	double endY = posY + (UNIT);
+	double endX = posX + ROBOT_SIZE; //Borde inferior derecho del robot
+	double endY = posY + ROBOT_SIZE;
 
 	double nposX = posX;
 	double nposY = posY;
@@ -159,3 +162,8 @@ void DestroySim(sim_t* sim)
 	DestroyFloor(sim->piso);
 	free(sim);
 }
+
+
+
+
+

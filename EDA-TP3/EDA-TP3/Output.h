@@ -13,11 +13,14 @@
 #include "Simulation.h"
 #define SPACE 80.0
 
+
 //IMAGENES
 
 #define BALDOSA_SUCIA "../Imagenes/dirtytile.png"
-#define BALDOSA_LIMPIA "../Imagenes/tile.png"
+#define BALDOSA_LIMPIA "../Imagenes/limpio2.png"
 #define ROBOT "../Imagenes/robot.png"
+
+
 
 typedef struct
 {
@@ -52,5 +55,7 @@ imagenes_t* SetImages(void);
 //Devuelve NULL en caso de error.
 
 void DestroyImages(imagenes_t*);
+
+unsigned long RunSim1(sim_t* simulation, imagenes_t* img);
 
 #endif //OUTPUT_H

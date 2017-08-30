@@ -11,6 +11,7 @@
 #define SUCIO false
 #define LIMPIO true
 #define UNIT 40
+#define ROBOT_SIZE ((UNIT))
 #define RADIAN(x) (((x)*(M_PI))/180.0)
 #define DEG(x) (((x)*180.0)/(double)M_PI)
 
@@ -51,5 +52,7 @@ typedef struct
 	unsigned long tick_count;
 
 }sim_t;
+
+
 
 #endif // !DEFINITIONS_H

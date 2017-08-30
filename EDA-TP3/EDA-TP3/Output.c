@@ -12,6 +12,9 @@
 #define VECTOR_COLOR "red"
 #define FONT_FILE "../Fonts/Starjedi.ttf"	
 
+#define NO 1
+#define YES 0
+
 void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
 //Funcion que recibe las baldosas, la cantidad de las mismas y las dos imagen para cada estado de la baldosa.
 //Actualiza todas las baldosas en el display segun su estado.
@@ -225,7 +228,7 @@ imagenes_t* SetImages(void)
 
 	ALLEGRO_BITMAP* baldosa_limpia = load_image_at_size(BALDOSA_LIMPIA, UNIT, UNIT);
 	ALLEGRO_BITMAP* baldosa_sucia = load_image_at_size(BALDOSA_SUCIA, UNIT, UNIT);
-	ALLEGRO_BITMAP* robot = load_image_at_size(ROBOT, UNIT, UNIT);
+	ALLEGRO_BITMAP* robot = load_image_at_size(ROBOT, ROBOT_SIZE, ROBOT_SIZE);
 
 	if( (baldosa_sucia == NULL)||(baldosa_limpia == NULL)||(robot == NULL)||(img==NULL) )
 	{
@@ -248,4 +251,61 @@ void DestroyImages(imagenes_t* img)
 	al_destroy_bitmap((img->robot));
 	free(img);
 
+}
+
+unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
+{
+	int count_iteration = 0;
+	double posRobX = 0;
+	double posRobY = 0;
+
+
+	bool count_aux = true;
+	bool finish = NO;
+
+	while (finish == NO)
+	{
+		for (unsigned int i = 0; i < (simulation->robot_count); i++)
+		{
+			posRobX = ((simulation->robots) + i)->pos.x;
+			posRobY = ((simulation->robots) + i)->pos.y;
+
+			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
+
+			((simulation->piso) + (int)(simulation->width)*(int)((posRobY+ROBOT_SIZE/2.0)/(UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0)/UNIT))->state = true;
+			ActualizarDisplay(simulation, img);
+			al_rest(0.005);
+			al_flip_display();
+
+
+			//for(int h = 0; (((sim->piso) + h)->height != posRobX ) && (((sim->piso) + h)->width != posRobY ); h++);
+
+			/*
+			if( !getPisoState( (sim + i)->piso, (unsigned int) (sim + i)->robot.pos.x, (unsigned int) (sim + i)->robot.pos.y ) )
+			changePisoState( (sim + i)->piso );
+			*/
+
+		}
+
+		for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
+		{
+			for (unsigned int j = 0; (j < (simulation->width)) && (count_aux); j++)
+			{
+				count_aux = getPisoState((simulation->piso), k, j);
+				
+			}
+			if (k == ((simulation->height)-1))
+			{
+				finish = YES;
+			}
+		}
+		
+
+		
+
+		count_iteration++;
+		count_aux = true;
+	}
+
+	return count_iteration;
 }
