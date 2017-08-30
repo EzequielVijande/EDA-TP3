@@ -36,9 +36,9 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 		{
 			for (unsigned int i = 0; i < Number; i++)
 			{
-				(((robots+i)->pos).x) =  (width / ((double)((rand() + 1)%10)) ) ;
-				(((robots + i)->pos).y) =  (height / ((double)((rand())%10)+1) );
-				((robots + i)->angle) = 360.0 / ((double)((rand()%10)+1)) ;
+				(((robots+i)->pos).x) =  (rand()%width)+1 ;
+				(((robots + i)->pos).y) =  (rand()%width)+1;
+				((robots + i)->angle) = rand()%300 ;
 			}
 		}
 	return robots;
@@ -47,24 +47,36 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 void MoveRobot(robot_t *robots, unsigned int height, unsigned int width)
 {
 
-	double posX = robots->pos.x;
+	double posX = robots->pos.x; //borde superior izquierdo del robot
 	double posY = robots->pos.y;
-	double nposX = robots->pos.x;
-	double nposY = robots->pos.y;
+	double endX = posX + (UNIT); //Borde inferior derecho del robot
+	double endY = posY + (UNIT);
+
+	double nposX = posX;
+	double nposY = posY;
+	double nendX = endX;
+	double nendY = endY;
+
+
 	double alpha = robots->angle;
 	alpha = RADIAN(alpha);
 
 	
-	nposX = (posX + (UNIT)*cos(alpha));				//falta multiplicar al cos y al sin por la unidad
+	nposX = (posX + (UNIT)*cos(alpha));				
 	nposY = (posY - (UNIT)*sin(alpha));
+	nendX = (endX + (UNIT)*cos(alpha));
+	nendY = (endY - (UNIT)*sin(alpha));
 
-	while ((nposX < 0) || (nposX > width) || (nposY < 0) || (nposY > height))
+
+	while ((nposX < 0) || (nposX > width) || (nposY < 0) || (nposY > height) || (nendX < 0) || (nendX > width) || (nendY < 0) || (nendY > height))
 	{
 
-		alpha = 360.0 / ((double)((rand() % 10) + 1));
+		alpha = rand() % 360;
 		alpha = RADIAN(alpha);
 		nposX = (posX + (UNIT)*cos(alpha));
 		nposY = (posY - (UNIT)*sin(alpha));
+		nendX = (endX + (UNIT)*cos(alpha));
+		nendY = (endY - (UNIT)*sin(alpha));
 		}
 	
 	posX = (posX + (UNIT)*cos(alpha));

@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 	{
 		al_destroy_display(display);
 		DestroyImages(imagenes);
+		return -1;
 
 	}
 	ActualizarDisplay(Sim, imagenes);
