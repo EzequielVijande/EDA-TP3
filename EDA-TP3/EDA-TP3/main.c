@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
-	char mode = '1';
+	char mode = '2';
 	unsigned long Tick_counter = 0;
 	unsigned int width = 10;
 	unsigned int height = 10;
@@ -108,23 +108,23 @@ int main(int argc, char* argv[])
 		do
 		{
 			Tick[j] = 0;
-			Sim = CreateSim(j + 1, height, width);
-			if (Sim == NULL)
-			{
-				al_destroy_display(display);
-				return ERROR;
-			}
+			
 
 			for (int i = 0; i < MAX_ITERATIONS; i++)
 			{
+				Sim = CreateSim(j + 1, height, width);
+				if (Sim == NULL)
+				{
+					al_destroy_display(display);
+					return ERROR;
+				}
 				Tick[j] += RunSim2(Sim);
+				DestroySim(Sim);
 			}
 			Tick[j] /= MAX_ITERATIONS;
-			DestroySim(Sim);
 			j++;
-		} while (((Tick[j - 2]) - (Tick[j - 1])) > 2);
-
-		printf("j:%d", j);
+		} while (((Tick[j - 2]) - (Tick[j - 1])) > 0);
+		
 		PrintHistogram(j, display, Tick);
 		al_flip_display();
 		al_rest(6);
