@@ -293,10 +293,14 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 			posRobX = (((simulation->robots) + i)->pos).x;
 			posRobY = (((simulation->robots) + i)->pos).y;
 
-			
+			//printf("\nI:%d", i);
+			//printf("posRobX: %f", posRobX);
+			//printf("posRobY: %f", posRobY);
+			//printf("\nangle: %f", (((simulation->robots) + i)->angle));
 			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
+			//printf("\nI:%d", i);
 			((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT)))->state = true;
-			
+			//printf("\nI:%d", i);
 			
 			
 			

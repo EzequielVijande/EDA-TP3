@@ -20,8 +20,8 @@ int main(int argc, char* argv[])
 	imagenes_t* imagenes = NULL;
 	char mode = '2';
 	unsigned long Tick_counter = 0;
-	unsigned int width = 30;
-	unsigned int height = 30;
+	unsigned int width = 10;
+	unsigned int height = 15;
 	unsigned int n_robots = 1;
 	srand(time(NULL));
 
@@ -98,16 +98,13 @@ int main(int argc, char* argv[])
 				al_destroy_display(display);
 				return ERROR;
 			}
-			//printf("\nHola%d\n", i);
 			Tick[0] += RunSim2(Sim);
-			//printf("\nHola%d\n", i);
 
 			DestroySim(Sim);
 
 		}
 		Tick[0] /= MAX_ITERATIONS;
 		unsigned int j = 1;
-		printf("\nHola\n");
 		do
 		{
 			Tick[j] = 0;
@@ -125,8 +122,9 @@ int main(int argc, char* argv[])
 			Tick[j] /= MAX_ITERATIONS;
 			DestroySim(Sim);
 			j++;
-		} while (((Tick[j - 2]) - (Tick[j - 1])) > 4);
+		} while (((Tick[j - 2]) - (Tick[j - 1])) > 2);
 
+		printf("j:%d", j);
 		PrintHistogram(j, display, Tick);
 		al_flip_display();
 		al_rest(6);

@@ -50,8 +50,8 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 
 void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_width)
 {
-	unsigned int width = input_width *(UNIT);
-	unsigned int height = input_height*(UNIT);
+	double width = (double)input_width *(UNIT);
+	double height = (double)input_height*(UNIT);
 	double posX = robots->pos.x; //borde superior izquierdo del robot
 	double posY = robots->pos.y;
 	double endX = posX + ROBOT_SIZE; //Borde inferior derecho del robot
@@ -82,7 +82,7 @@ void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_wi
 		nposY = (posY - (UNIT)*sin(alpha));
 		nendX = (endX + (UNIT)*cos(alpha));
 		nendY = (endY - (UNIT)*sin(alpha));
-		}
+	}
 	
 	posX = (posX + (UNIT)*cos(alpha));
 	posY = (posY - (UNIT)*sin(alpha));
@@ -204,9 +204,11 @@ unsigned long RunSim2(sim_t* simulation)
 			posRobX = ((simulation->robots) + i)->pos.x;
 			posRobY = ((simulation->robots) + i)->pos.y;
 
+			
 			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
-
 			((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT))->state = true;
+
+			
 
 
 
