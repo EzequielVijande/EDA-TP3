@@ -27,7 +27,7 @@ piso_t* CreateFloor(unsigned int width, unsigned int height);
 sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width);
 //Crea y guarda todos los datos necesarios para correr la simulacion.
 
-unsigned long RunSim(sim_t* simulation);
+unsigned long RunSim2(sim_t* simulation);
 //Corre la simulacion hasta limpiar todas las baldosas y devuelve
 //el numero de ticks que tardo en finalizar.
 

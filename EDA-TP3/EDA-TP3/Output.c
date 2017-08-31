@@ -278,12 +278,6 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 			al_flip_display();
 
 
-			//for(int h = 0; (((sim->piso) + h)->height != posRobX ) && (((sim->piso) + h)->width != posRobY ); h++);
-
-			/*
-			if( !getPisoState( (sim + i)->piso, (unsigned int) (sim + i)->robot.pos.x, (unsigned int) (sim + i)->robot.pos.y ) )
-			changePisoState( (sim + i)->piso );
-			*/
 
 		}
 

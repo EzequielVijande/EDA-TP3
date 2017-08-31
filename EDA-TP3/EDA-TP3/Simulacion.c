@@ -2,7 +2,8 @@
 
 #include<stdio.h>
 
-
+#define NO 1
+#define YES 0
 
 
 //FALTARIA:
@@ -161,6 +162,55 @@ void DestroySim(sim_t* sim)
 	DestroyRobots(sim->robots);
 	DestroyFloor(sim->piso);
 	free(sim);
+}
+
+unsigned long RunSim2(sim_t* simulation)
+{
+	int count_iteration = 0;
+	double posRobX = 0;
+	double posRobY = 0;
+
+
+	bool count_aux = true;
+	bool finish = NO;
+
+	while (finish == NO)
+	{
+		for (unsigned int i = 0; i < (simulation->robot_count); i++)
+		{
+			posRobX = ((simulation->robots) + i)->pos.x;
+			posRobY = ((simulation->robots) + i)->pos.y;
+
+			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
+
+			((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT))->state = true;
+
+
+
+
+		}
+
+		for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
+		{
+			for (unsigned int j = 0; (j < (simulation->width)) && (count_aux); j++)
+			{
+				count_aux = getPisoState((simulation->piso), k, j);
+
+			}
+			if (k == ((simulation->height) - 1))
+			{
+				finish = YES;
+			}
+		}
+
+
+
+
+		count_iteration++;
+		count_aux = true;
+	}
+
+	return count_iteration;
 }
 
 

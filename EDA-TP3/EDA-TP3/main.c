@@ -8,6 +8,7 @@
 #include<allegro5\allegro_ttf.h>
 
 #define ERROR -1
+#define MAX_ITERATIONS 1000
 
 int Initialization(void);
 //Inicializa Allegro y sus addons.
@@ -17,6 +18,10 @@ int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
+	unsigned long Tick_counter = 0;
+	unsigned int width = 3;
+	unsigned int height = 3;
+	unsigned int n_robots = 5;
 	srand(time(NULL));
 
 	if (Initialization() == ERROR)
@@ -33,53 +38,95 @@ int main(int argc, char* argv[])
 		fprintf(stderr, "failed to load images!\n");
 		return ERROR;
 	}
-	display = al_create_display(15*UNIT, 15 * UNIT);
+	
+	
+
+	
+	
+	
+	
+	/*
+	//Caso1
+
+	display = al_create_display(width * UNIT, height * UNIT);
+	if (display == NULL)
+	{
+	fprintf(stderr, "failed to create display!\n");
+	return ERROR;
+	}
+	sim_t* Sim= CreateSim(n_robots, height, width);
+	if (Sim == NULL)
+	{
+	al_destroy_display(display);
+	DestroyImages(imagenes);
+	return -1;
+
+	}
+	ActualizarDisplay(Sim, imagenes);
+	Tick_counter= RunSim1(Sim, imagenes);
+	fprintf(stdout, "\nTicks: %ul\n", Tick_counter);
+	al_destroy_display(display);
+	al_rest(6);
+	DestroySim(Sim);
+	DestroyImages(imagenes);
+
+
+	return 0;
+	*/
+
+	//Caso2
+
+	unsigned long Tick[100];
+	sim_t* Sim= NULL;
+
+	display = al_create_display(1080,900);
 	if (display == NULL)
 	{
 		fprintf(stderr, "failed to create display!\n");
 		return ERROR;
 	}
-
-	unsigned int n_robots = 5;
-	unsigned long Ticks[5] = {60, 43, 31, 27, 8};
-	
-	/*
-	if(PrintHistogram(n_robots, display, Ticks) == -1)
+	Tick[0] = 0;
+	for (int i = 0; i < MAX_ITERATIONS; i++)
 	{
-		fprintf(stderr, "failed to load font!\n");
-		return -1;
-	}
-
-	
-	*/
-	
-	sim_t* Sim= CreateSim(15, 15, 15);
-	if (Sim == NULL)
-	{
-		al_destroy_display(display);
-		DestroyImages(imagenes);
-		return -1;
-
-	}
-	ActualizarDisplay(Sim, imagenes);
-	/*for (int i = 0; i < 600; i++)
-	{
-		for (unsigned int j = 0; j < (Sim->robot_count); j++)
+		Sim = CreateSim(1, height, width);
+		if (Sim == NULL)
 		{
-			MoveRobot((Sim->robots)+j, (Sim->height), (Sim->width));
+			al_destroy_display(display);
+			return ERROR;
 		}
-		ActualizarDisplay(Sim, imagenes);
-		al_rest(0.05);
-		al_flip_display();
-	}
-	*/
-	RunSim1(Sim, imagenes);
+		printf("\nHola%d\n", i);
+		Tick[0]+=RunSim2(Sim);
+		printf("\nHola%d\n", i);
 
+		DestroySim(Sim);
+
+	}
+	Tick[0] /= MAX_ITERATIONS;
+	unsigned int j = 1;
+	printf("\nHola\n");
+	do
+	{
+		Tick[j] = 0;
+		Sim = CreateSim(j+1, height, width);
+		if (Sim == NULL)
+		{
+			al_destroy_display(display);
+			return ERROR;
+		}
+
+		for (int i = 0; i < MAX_ITERATIONS; i++)
+		{
+			Tick[j] +=  RunSim2(Sim);
+		}
+		Tick[j] /= MAX_ITERATIONS;
+		DestroySim(Sim);
+		j++;
+	}while (((Tick[j-2]) - (Tick[j-1])) > 4);
+	
+	PrintHistogram(j, display, Tick);
 	al_flip_display();
-	al_rest(2);
+	al_rest(6);
 	al_destroy_display(display);
-	DestroySim(Sim);
-	DestroyImages(imagenes);
 
 
 	return 0;
