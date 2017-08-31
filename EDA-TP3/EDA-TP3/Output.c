@@ -14,7 +14,7 @@
 
 #define NO 1
 #define YES 0
-#define DELAY 0.07
+#define DELAY 0.09
 
 void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
 //Funcion que recibe las baldosas, la cantidad de las mismas y las dos imagen para cada estado de la baldosa.
@@ -134,6 +134,7 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 	pos_t vector_head1 = { 0.0 , 0.0 }; //Representan los tres vertices del triangulo que forma
 	pos_t vector_head2 = { 0.0 , 0.0 }; //la cabeza del vector.
 	pos_t vector_head3 = { 0.0 , 0.0 };
+	unsigned int unit = (robots->unit);
 	double angle = 0.0;
 
 	for (unsigned int i = 0; i < n_robots; i++)
@@ -143,19 +144,19 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 		angle = RADIAN(angle);
 		al_draw_bitmap(imagen_robot, cord.x, cord.y, 0); //dibuja el robot en su posicion del display
 
-		(vector.x) = (cord.x) + (UNIT)*cos(angle);
-		(vector.y) = (cord.y)  - (UNIT)*sin(angle);
+		(vector.x) = (cord.x) + (unit)*cos(angle);
+		(vector.y) = (cord.y)  - (unit)*sin(angle);
 
-		al_draw_line((cord.x) + (ROBOT_SIZE) / 2.0, (cord.y) + (ROBOT_SIZE) / 2.0, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
+		al_draw_line((cord.x) + (ROBOT_SIZE(unit)) / 2.0, (cord.y) + (ROBOT_SIZE(unit)) / 2.0, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
 
-		vector_head1.x = (vector.x) - ((UNIT)/10.0)*cos(M_PI / 4.0);
-		vector_head1.y = (vector.y) - ((UNIT) / 10.0)*sin(M_PI / 4.0);
+		vector_head1.x = (vector.x) - ((unit)/10.0)*cos(M_PI / 4.0);
+		vector_head1.y = (vector.y) - ((unit) / 10.0)*sin(M_PI / 4.0);
 
-		vector_head2.x = (vector.x) +((UNIT) / 10.0)*cos(M_PI / 4.0);
-		vector_head2.y = (vector.y) + ((UNIT) / 10.0)*sin(M_PI / 4.0);
+		vector_head2.x = (vector.x) +((unit) / 10.0)*cos(M_PI / 4.0);
+		vector_head2.y = (vector.y) + ((unit) / 10.0)*sin(M_PI / 4.0);
 
-		vector_head3.x = (vector.x) + ((UNIT) / 10.0)*cos(angle);
-		vector_head3.y = (vector.y) - ((UNIT) / 10.0)*sin(angle);
+		vector_head3.x = (vector.x) + ((unit) / 10.0)*cos(angle);
+		vector_head3.y = (vector.y) - ((unit) / 10.0)*sin(angle);
 
 		al_draw_filled_triangle(vector_head1.x, vector_head1.y, vector_head2.x, vector_head2.y, vector_head3.x, vector_head3.y, al_color_name(VECTOR_COLOR));
 		//Dibuja el vector que indica la direccion del robot.Tiene modulo UNIT y parte del centro del robot.
@@ -223,13 +224,13 @@ ALLEGRO_BITMAP * load_image_at_size(char* image_name, int size_x, int size_y)
 	return resized_image;
 }
 
-imagenes_t* SetImages(void)
+imagenes_t* SetImages(unsigned int unit)
 {
 	imagenes_t* img = malloc(sizeof(imagenes_t));
 
-	ALLEGRO_BITMAP* baldosa_limpia = load_image_at_size(BALDOSA_LIMPIA, UNIT, UNIT);
-	ALLEGRO_BITMAP* baldosa_sucia = load_image_at_size(BALDOSA_SUCIA, UNIT, UNIT);
-	ALLEGRO_BITMAP* robot = load_image_at_size(ROBOT, ROBOT_SIZE, ROBOT_SIZE);
+	ALLEGRO_BITMAP* baldosa_limpia = load_image_at_size(BALDOSA_LIMPIA, unit, unit);
+	ALLEGRO_BITMAP* baldosa_sucia = load_image_at_size(BALDOSA_SUCIA, unit, unit);
+	ALLEGRO_BITMAP* robot = load_image_at_size(ROBOT, ROBOT_SIZE(unit), ROBOT_SIZE(unit));
 
 	if( (baldosa_sucia == NULL)||(baldosa_limpia == NULL)||(robot == NULL)||(img==NULL) )
 	{
@@ -259,6 +260,7 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 	int count_iteration = 0;
 	double posRobX = 0;
 	double posRobY = 0;
+	unsigned int unit = (simulation->unit);
 
 
 	bool count_aux = true;
@@ -268,7 +270,7 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 	{
 		posRobX = (((simulation->robots) + i)->pos).x;
 		posRobY = (((simulation->robots) + i)->pos).y;
-		((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT)))->state = true;
+		((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE(unit) / 2.0) / (unit)) + (int)((posRobX + ROBOT_SIZE(unit) / 2.0) / unit)))->state = true;
 	}
 
 	for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
@@ -294,20 +296,13 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 			posRobX = (((simulation->robots) + i)->pos).x;
 			posRobY = (((simulation->robots) + i)->pos).y;
 
-			//printf("\nI:%d", i);
-			//printf("posRobX: %f", posRobX);
-			//printf("posRobY: %f", posRobY);
-			//printf("\nangle: %f", (((simulation->robots) + i)->angle));
-			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
-			//printf("\nI:%d", i);
-			((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT)))->state = true;
-			//printf("\nI:%d", i);
 			
+			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
+			((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE(unit) / 2.0) / (unit)) + (int)((posRobX + ROBOT_SIZE(unit) / 2.0) / unit)))->state = true;
 			
 			
 			ActualizarDisplay(simulation, img);
 			
-
 
 
 		}

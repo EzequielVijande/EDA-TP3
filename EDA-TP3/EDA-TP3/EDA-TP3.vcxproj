@@ -124,6 +124,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="config.h" />
+    <ClInclude Include="lib.h" />
     <ClInclude Include="Output.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="Structures.h" />
@@ -132,6 +134,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\ITBA\Segundo año\EDA\Callback\Callback.c" />
+    <ClCompile Include="..\..\..\..\..\ITBA\Segundo año\EDA\Callback\lib.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Output.c" />
     <ClCompile Include="Simulacion.c" />

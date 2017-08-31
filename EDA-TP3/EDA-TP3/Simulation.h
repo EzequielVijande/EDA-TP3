@@ -2,7 +2,7 @@
 #define SIMULATION_H
 #include "Structures.h"
 
-robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width);
+robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width, unsigned int unit);
 //Crea un heap con el numero de robots a crear y les da un valor incial aleatorio
 //de posicision y de angulo a cada uno. Asume que ya se ha inicializado la semilla srand(time(NULL))
 
@@ -20,11 +20,11 @@ double GetRobotDir(const robot_t *robot);
 void DestroyRobots(robot_t *robots);
 //Libera la memoria usada por los robots.
 
-piso_t* CreateFloor(unsigned int width, unsigned int height);
+piso_t* CreateFloor(unsigned int width, unsigned int height, unsigned int unit);
 //Crea la memoria para el piso e inicializa todas las baldosas
 //como sucias.
 
-sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width);
+sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width, unsigned int unit);
 //Crea y guarda todos los datos necesarios para correr la simulacion.
 
 unsigned long RunSim2(sim_t* simulation);

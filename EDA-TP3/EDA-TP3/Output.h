@@ -49,7 +49,7 @@ int PrintHistogram(unsigned int n_robots, ALLEGRO_DISPLAY* display, unsigned lon
 //Funcion que inicializa un arreglo de punteros en NULL.
 void set_null(void  **(puntero), int largo);
 
-imagenes_t* SetImages(void);
+imagenes_t* SetImages(unsigned int);
 //Funcion que carga todas las imagenes a usar en el formato adecuado.
 //devuelve un puntero a una estructura con todas las imagenes.
 //Devuelve NULL en caso de error.

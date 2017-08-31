@@ -9,17 +9,18 @@
 //FALTARIA:
 // unsigned long RunSim(sim_t* simulation);
 
-sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width)
+sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int width, unsigned int unit)
 {
 	sim_t* Sim = malloc(sizeof(sim_t));
 	if (Sim != NULL)
 	{
-		Sim->robots = CreateRobots(RobotCount, height*(UNIT), width*(UNIT));
+		Sim->robots = CreateRobots(RobotCount, height*(unit), width*(unit), unit);
 		Sim->robot_count = RobotCount;
 		Sim->height = height;
 		Sim->width = width;
+		Sim->unit = unit;
 		(Sim->tick_count) = 0;
-		(Sim->piso )= CreateFloor(width, height);
+		(Sim->piso )= CreateFloor(width, height, unit);
 		if (((Sim->robots) != NULL) && ((Sim->piso) != NULL))
 		{
 			return Sim;
@@ -31,7 +32,7 @@ sim_t* CreateSim(unsigned int RobotCount, unsigned int height, unsigned int widt
 
 }
 
-robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
+robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width, unsigned int unit)
 {
 	robot_t * robots = NULL;
 	robots = malloc(sizeof(robot_t)*Number);
@@ -42,6 +43,7 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 				(((robots+i)->pos).x) =  (rand()%width) ;
 				(((robots + i)->pos).y) =  (rand()%height);
 				((robots + i)->angle) = rand()%300 ;
+				(robots + i)->unit = unit;
 			}
 			
 		}
@@ -50,12 +52,13 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 
 void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_width)
 {
-	double width = (double)input_width *(UNIT);
-	double height = (double)input_height*(UNIT);
+	unsigned int unit = (robots->unit);
+	double width = (double)input_width *(unit);
+	double height = (double)input_height*(unit);
 	double posX = robots->pos.x; //borde superior izquierdo del robot
 	double posY = robots->pos.y;
-	double endX = posX + ROBOT_SIZE; //Borde inferior derecho del robot
-	double endY = posY + ROBOT_SIZE;
+	double endX = posX + ROBOT_SIZE(unit); //Borde inferior derecho del robot
+	double endY = posY + ROBOT_SIZE(unit);
 
 	double nposX = posX;
 	double nposY = posY;
@@ -67,10 +70,10 @@ void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_wi
 	alpha = RADIAN(alpha);
 
 	
-	nposX = (posX + (UNIT)*cos(alpha));				
-	nposY = (posY - (UNIT)*sin(alpha));
-	nendX = (endX + (UNIT)*cos(alpha));
-	nendY = (endY - (UNIT)*sin(alpha));
+	nposX = (posX + (unit)*cos(alpha));
+	nposY = (posY - (unit)*sin(alpha));
+	nendX = (endX + (unit)*cos(alpha));
+	nendY = (endY - (unit)*sin(alpha));
 
 
 	while ((nposX < 0) || (nposX > width) || (nposY < 0) || (nposY > height) || (nendX < 0) || (nendX > width) || (nendY < 0) || (nendY > height))
@@ -78,14 +81,14 @@ void MoveRobot(robot_t *robots, unsigned int input_height, unsigned int input_wi
 
 		alpha = rand() % 360;
 		alpha = RADIAN(alpha);
-		nposX = (posX + (UNIT)*cos(alpha));
-		nposY = (posY - (UNIT)*sin(alpha));
-		nendX = (endX + (UNIT)*cos(alpha));
-		nendY = (endY - (UNIT)*sin(alpha));
+		nposX = (posX + (unit)*cos(alpha));
+		nposY = (posY - (unit)*sin(alpha));
+		nendX = (endX + (unit)*cos(alpha));
+		nendY = (endY - (unit)*sin(alpha));
 	}
 	
-	posX = (posX + (UNIT)*cos(alpha));
-	posY = (posY - (UNIT)*sin(alpha));
+	posX = (posX + (unit)*cos(alpha));
+	posY = (posY - (unit)*sin(alpha));
 	alpha = DEG(alpha);
 	(robots->pos).x = posX;
 	(robots->pos).y = posY;
@@ -115,7 +118,7 @@ void DestroyFloor(piso_t* piso)
 	free(piso);
 }
 
-piso_t* CreateFloor(unsigned int width, unsigned int height)
+piso_t* CreateFloor(unsigned int width, unsigned int height, unsigned int unit)
 {
 	piso_t * piso = NULL;
 	
@@ -133,8 +136,8 @@ piso_t* CreateFloor(unsigned int width, unsigned int height)
 			for (unsigned int j = 0; j < width; j++)
 			{
 				((piso + i*width + j)->state) = false;						//REVISAR!!!!!
-				(((piso + i*width + j)->ubicacion).x) = j*UNIT;
-				(((piso + i*width + j)->ubicacion).y) = i*UNIT;
+				(((piso + i*width + j)->ubicacion).x) = j*unit;
+				(((piso + i*width + j)->ubicacion).y) = i*unit;
 			}
 		
 			
@@ -170,6 +173,7 @@ unsigned long RunSim2(sim_t* simulation)
 	int count_iteration = 0;
 	double posRobX = 0;
 	double posRobY = 0;
+	unsigned int unit = (simulation->unit);
 
 
 	bool count_aux = true;
@@ -179,7 +183,7 @@ unsigned long RunSim2(sim_t* simulation)
 	{
 		posRobX = (((simulation->robots) + i)->pos).x;
 		posRobY = (((simulation->robots) + i)->pos).y;
-		((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT)))->state = true;
+		((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE(unit) / 2.0) / (unit)) + (int)((posRobX + ROBOT_SIZE(unit) / 2.0) / unit)))->state = true;
 	}
 
 	for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
@@ -206,7 +210,7 @@ unsigned long RunSim2(sim_t* simulation)
 
 			
 			MoveRobot((simulation->robots) + i, simulation->height, simulation->width);
-			((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT))->state = true;
+			((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE(unit) / 2.0) / (unit)) + (int)((posRobX + ROBOT_SIZE(unit) / 2.0) / unit))->state = true;
 
 			
 

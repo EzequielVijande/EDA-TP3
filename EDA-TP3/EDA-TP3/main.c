@@ -6,6 +6,8 @@
 #include<allegro5\allegro_font.h>
 #include<allegro5\allegro_primitives.h>
 #include<allegro5\allegro_ttf.h>
+#include "../EDA-TP3/config.h"
+#include "../EDA-TP3/lib.h"
 
 #define ERROR -1
 #define MAX_ITERATIONS 1000
@@ -18,12 +20,43 @@ int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
-	char mode = '2';
+
+
+	CleanerParams_t params;
+	CleanerParams_t *pC = &params;
+	int CmdResult, CleanerResult;
+	init_CleanerParams(pC);
+	CmdResult = parseCmdLine(argc, argv, parseCallback, &params);
+
+
+	if ((CmdResult == -1) || (CmdResult == 0)) 
+	{
+		printf("Invalid arguments or values! %d\n", CmdResult);
+		return ERROR;
+	}
+
+	CleanerResult = check_Cleaner_mode(pC);
+	if (CleanerResult == INC_DATA) 
+	{
+		printf("To few arguments!\n");
+		return ERROR;
+	}
+	if (CleanerResult == OUT_OF_RANGE) 
+	{
+		printf("Valores fuera de rango!\n");
+		return ERROR;
+	}
+
+	int mode = params.mode;
 	unsigned long Tick_counter = 0;
-	unsigned int width = 10;
-	unsigned int height = 10;
-	unsigned int n_robots = 1;
+	unsigned int width = params.width;
+	unsigned int height = params.height;
+	unsigned int n_robots = params.robots;
+	
 	srand(time(NULL));
+	unsigned int unit = (UNIT) / (((double)width + (double)height) / 2.0);
+
+
 
 	if (Initialization() == ERROR)
 	{
@@ -32,7 +65,7 @@ int main(int argc, char* argv[])
 	}
 
 	
-	imagenes = SetImages();
+	imagenes = SetImages(unit);
 
 	if (imagenes == NULL)
 	{
@@ -45,17 +78,17 @@ int main(int argc, char* argv[])
 	
 	
 	
-	
-	if(mode=='1')
+	//Modo1
+	if(mode== 1)
 	{
 
-		display = al_create_display(width * UNIT, height * UNIT);
+		display = al_create_display(width * unit, height * unit);
 		if (display == NULL)
 		{
 		fprintf(stderr, "failed to create display!\n");
 		return ERROR;
 		}
-		sim_t* Sim= CreateSim(n_robots, height, width);
+		sim_t* Sim= CreateSim(n_robots, height, width, unit);
 		if (Sim == NULL)
 		{
 		al_destroy_display(display);
@@ -77,7 +110,7 @@ int main(int argc, char* argv[])
 
 
 	//Caso2
-	else if (mode == '2')
+	else 
 	{
 		unsigned long Tick[100];
 		sim_t* Sim = NULL;
@@ -92,7 +125,7 @@ int main(int argc, char* argv[])
 		Tick[0] = 0;
 		for (int i = 0; i < MAX_ITERATIONS; i++)
 		{
-			Sim = CreateSim(1, height, width);
+			Sim = CreateSim(1, height, width, unit);
 			if (Sim == NULL)
 			{
 				al_destroy_display(display);
@@ -112,7 +145,7 @@ int main(int argc, char* argv[])
 
 			for (int i = 0; i < MAX_ITERATIONS; i++)
 			{
-				Sim = CreateSim(j + 1, height, width);
+				Sim = CreateSim(j + 1, height, width, unit);
 				if (Sim == NULL)
 				{
 					al_destroy_display(display);
