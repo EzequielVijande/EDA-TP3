@@ -19,9 +19,9 @@ int main(int argc, char* argv[])
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
 	unsigned long Tick_counter = 0;
-	unsigned int width = 3;
-	unsigned int height = 3;
-	unsigned int n_robots = 5;
+	unsigned int width = 5;
+	unsigned int height = 5;
+	unsigned int n_robots = 1;
 	srand(time(NULL));
 
 	if (Initialization() == ERROR)
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	
 	
 	
-	/*
+	
 	//Caso1
 
 	display = al_create_display(width * UNIT, height * UNIT);
@@ -66,16 +66,16 @@ int main(int argc, char* argv[])
 	Tick_counter= RunSim1(Sim, imagenes);
 	fprintf(stdout, "\nTicks: %ul\n", Tick_counter);
 	al_destroy_display(display);
-	al_rest(6);
+	al_rest(2);
 	DestroySim(Sim);
 	DestroyImages(imagenes);
 
 
 	return 0;
-	*/
+
 
 	//Caso2
-
+/*
 	unsigned long Tick[100];
 	sim_t* Sim= NULL;
 
@@ -130,6 +130,7 @@ int main(int argc, char* argv[])
 
 
 	return 0;
+	*/
 }
 
 int Initialization(void)

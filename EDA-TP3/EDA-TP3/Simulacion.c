@@ -39,10 +39,11 @@ robot_t* CreateRobots(unsigned int Number, unsigned int height, unsigned width)
 		{
 			for (unsigned int i = 0; i < Number; i++)
 			{
-				(((robots+i)->pos).x) =  (rand()%width)+1 ;
-				(((robots + i)->pos).y) =  (rand()%height)+1;
+				(((robots+i)->pos).x) =  (rand()%width) ;
+				(((robots + i)->pos).y) =  (rand()%height);
 				((robots + i)->angle) = rand()%300 ;
 			}
+			
 		}
 	return robots;
 }
