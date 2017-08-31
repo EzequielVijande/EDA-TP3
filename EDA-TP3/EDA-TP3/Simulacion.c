@@ -175,6 +175,28 @@ unsigned long RunSim2(sim_t* simulation)
 	bool count_aux = true;
 	bool finish = NO;
 
+	for (unsigned int i = 0; i < (simulation->robot_count); i++) //Chequea si la posicion en la que empiezan todos los robots ya limpia las baldosas
+	{
+		posRobX = (((simulation->robots) + i)->pos).x;
+		posRobY = (((simulation->robots) + i)->pos).y;
+		((piso_t*)((simulation->piso) + (int)(simulation->width)*(int)((posRobY + ROBOT_SIZE / 2.0) / (UNIT)) + (int)((posRobX + ROBOT_SIZE / 2.0) / UNIT)))->state = true;
+	}
+
+	for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
+	{
+		for (unsigned int j = 0; (j < (simulation->width)) && (count_aux); j++)
+		{
+			count_aux = getPisoState((simulation->piso), k, j);
+
+		}
+		if (k == ((simulation->height) - 1))
+		{
+			return 0;
+		}
+	}
+
+
+
 	while (finish == NO)
 	{
 		for (unsigned int i = 0; i < (simulation->robot_count); i++)
