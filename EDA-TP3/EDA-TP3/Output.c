@@ -14,6 +14,7 @@
 
 #define NO 1
 #define YES 0
+#define DELAY 0.07
 
 void ActualizarBaldosas(piso_t* baldosas, unsigned int height, unsigned int width, ALLEGRO_BITMAP* imagen_sucio, ALLEGRO_BITMAP* imagen_limpio);
 //Funcion que recibe las baldosas, la cantidad de las mismas y las dos imagen para cada estado de la baldosa.
@@ -145,7 +146,7 @@ void ActualizarRobots(robot_t* robots, unsigned int n_robots, ALLEGRO_BITMAP* im
 		(vector.x) = (cord.x) + (UNIT)*cos(angle);
 		(vector.y) = (cord.y)  - (UNIT)*sin(angle);
 
-		al_draw_line((cord.x) + (UNIT) / 2.0, (cord.y) + (UNIT) / 2.0, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
+		al_draw_line((cord.x) + (ROBOT_SIZE) / 2.0, (cord.y) + (ROBOT_SIZE) / 2.0, vector.x, vector.y, al_color_name(VECTOR_COLOR), 1.0);
 
 		vector_head1.x = (vector.x) - ((UNIT)/10.0)*cos(M_PI / 4.0);
 		vector_head1.y = (vector.y) - ((UNIT) / 10.0)*sin(M_PI / 4.0);
@@ -305,12 +306,13 @@ unsigned long RunSim1(sim_t* simulation, imagenes_t* img)
 			
 			
 			ActualizarDisplay(simulation, img);
-			al_rest(0.05);
-			al_flip_display();
+			
 
 
 
 		}
+		al_rest(DELAY);
+		al_flip_display();
 
 		for (unsigned int k = 0; (k < (simulation->height)) && (count_aux); k++)
 		{

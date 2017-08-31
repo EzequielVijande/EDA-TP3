@@ -18,10 +18,10 @@ int main(int argc, char* argv[])
 {
 	ALLEGRO_DISPLAY *display = NULL;
 	imagenes_t* imagenes = NULL;
-	char mode = '2';
+	char mode = '1';
 	unsigned long Tick_counter = 0;
 	unsigned int width = 10;
-	unsigned int height = 15;
+	unsigned int height = 10;
 	unsigned int n_robots = 1;
 	srand(time(NULL));
 
